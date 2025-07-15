@@ -31,7 +31,7 @@ import config from "./config";
   };
 
     return (
-        <AuthContext.Provider value={{token, register, login}}>
+        <AuthContext.Provider value={{token, register, login, api}}>
             {children}
         </AuthContext.Provider>
     )

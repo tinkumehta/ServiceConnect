@@ -6,7 +6,7 @@ export default function Providers() {
   const [search, setSearch] = useState('');
 
   const fetchProviders = async () => {
-    const url = search ? `http://localhost:8000/api/providers/search?category=${search}` : `http://localhost:8000/api/providers`;
+    const url = search ? `/api/providers/search?category=${search}` : `/api/providers`;
     const res = await axios.get(url);
    // console.log(res.data.data);
     setProviders(res.data.data);

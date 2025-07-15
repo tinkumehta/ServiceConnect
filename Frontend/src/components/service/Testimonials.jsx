@@ -8,7 +8,7 @@ export default function Testimonials() {
   const [message, setMessage] = useState('');
 
   const fetchTestimonials = async () => {
-    const res = await axios.get('http://localhost:8000/api/testimonials');
+    const res = await axios.get('/api/testimonials');
     setTestimonials(res.data.data);
   };
 
@@ -20,7 +20,7 @@ export default function Testimonials() {
     e.preventDefault();
     try {
       await axios.post(
-        'http://localhost:8000/api/testimonials',
+        '/api/testimonials',
         { providerId, message },
         {
           headers: {
@@ -28,7 +28,7 @@ export default function Testimonials() {
           }
         }
       );
-     // alert('Testimonial added!');
+    
       setMessage('');
       setProviderId('');
       fetchTestimonials();

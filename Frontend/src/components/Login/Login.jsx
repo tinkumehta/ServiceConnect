@@ -3,19 +3,19 @@ import {useNavigate} from "react-router-dom"
 import axios from 'axios';
 
 
-export default function Login() {
+export default function Login({setIsLoggedIn}) {
   const [form, setForm] = useState({ email: '', password: '' });
 
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/login', form);
+      const res = await axios.post('/api/auth/login', form);
      // console.log(res.data);
       
       localStorage.setItem('token', res.data.data.token);
      // console.log(res.data.data.createdUser.name);
-     
+     setIsLoggedIn(true);
       //alert('Logged In!');
       navigate("/")
     } catch (err) {

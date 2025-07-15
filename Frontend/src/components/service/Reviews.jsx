@@ -8,7 +8,7 @@ export default function Reviews() {
 
   const fetchReviews = async () => {
     if (!providerId) return;
-    const res = await axios.get(`http://localhost:8000/api/reviews/${providerId}`);
+    const res = await axios.get(`/api/reviews/${providerId}`);
     setReviews(res.data.data);
   };
 
@@ -16,7 +16,7 @@ export default function Reviews() {
     e.preventDefault();
     try {
       await axios.post(
-        'http://localhost:8000/api/reviews',
+        '/api/reviews',
         { providerId, rating: form.rating, comment: form.comment },
         {
           headers: {

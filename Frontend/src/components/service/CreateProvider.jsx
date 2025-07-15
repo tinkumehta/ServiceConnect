@@ -9,7 +9,7 @@ export default function CreateProvider() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8000/api/providers', form, {
+      await axios.post('/api/providers', form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
