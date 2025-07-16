@@ -17,20 +17,23 @@ export default function Providers() {
   }, [search]);
 
   return (
-    <div className="p-4 w-full ">
+    <div className="p-3 w-full ">
       <h2 className="text-xl mb-4 flex justify-center ">Service Providers</h2>
-      <div className='w-70  '>
+      
       
       <input 
        placeholder="Search category..." 
        value={search} 
        onChange={(e) => setSearch(e.target.value)} 
-       className="border p-2 mb-4" 
+       className="border text-black w-85 p-2 mb-4 rounded-2xl  bg-cyan-300 " 
        />
-       <div className="rounded-3xl  bg-amber-400">
+      
+        
       <ul className="space-y-2">
+       <div className="flex flex-wrap-reverse">
         {providers.map((p) => (
-          <li key={p._id} className="border p-2">
+           <div className="rounded-2xl  flex m-10 p-4 gap-2 justify-center bg-amber-500  ">
+          <li key={p._id} className=" p-2">
             <h3 className="font-bold flex justify-center  ">{p.name}</h3>
             <p>Category: {p.category}</p>
             <p>Contact: {p.contact}</p>
@@ -38,10 +41,13 @@ export default function Providers() {
             <p>{p.description}</p>
             <p>Id {p._id}</p>
           </li>
+          </div>
         ))}
+       </div>
       </ul>
+     
       </div>
-    </div>
-    </div>
+   
+    
   );
 }

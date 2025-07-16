@@ -7,7 +7,7 @@ import Home from "./Header/Home";
 import Login from "./Login/Login";
 import Register from "./Login/Register";
 import Footer from "./Footer/Footer";
-import Logout from "./Login/Logout";
+
 
 export {
     CreateProvider,
@@ -19,5 +19,5 @@ export {
     Login,
     Register,
     Footer,
-    Logout,
+    
 }

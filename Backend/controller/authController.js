@@ -1,6 +1,4 @@
-
 import {User} from "../models/User.models.js"
-
 import jwt from 'jsonwebtoken'
 import {asyncHandler} from '../utils/asyncHandler.js'
 import {ApiResponse} from '../utils/apiResponse.js'
@@ -86,9 +84,33 @@ const register = asyncHandler (async (req, res) => {
     )
  })
 
+ const changePassword = asyncHandler (async (req, res) => {
+    const {oldPassword, newPassword} = req.body;
+
+    if (!newPassword) {
+        throw new ApiError(400, "All filed is required")
+    }
+
+    const user = await User.findById(req.user?._id);
+
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+    if (!isPasswordCorrect) {
+        throw new ApiError(400, "Invalid Password")
+    }
+    user.password = newPassword
+    await user.save({validateBeforeSave : false})
+
+    return res
+    .status(201)
+    .json(
+        new ApiResponse (201, {}, "Password change succefully")
+    )
+ })
  
 
  export {
     register,
-    login
+    login,
+    changePassword,
  }
