@@ -16,6 +16,10 @@ const userSchema = new Schema({
         required : true,
         unique : true
     },
+    avatar : {
+        type : String, // cloudiray url
+        required : true,
+    },
     password : {
         type : String,
         required : true,

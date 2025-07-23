@@ -7,6 +7,7 @@ import Home from "./Header/Home";
 import Login from "./Login/Login";
 import Register from "./Login/Register";
 import Footer from "./Footer/Footer";
+import Profile from "./Header/Profile";
 
 
 export {
@@ -19,5 +20,5 @@ export {
     Login,
     Register,
     Footer,
-    
+    Profile
 }

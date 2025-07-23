@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import {asyncHandler} from '../utils/asyncHandler.js'
 import {ApiResponse} from '../utils/apiResponse.js'
 import {ApiError} from '../utils/apiError.js'
+import  { uploadToCloudinary } from "../utils/cloudinary.js"
 
 const register = asyncHandler (async (req, res) => {
     const {name, email, username, password, role} = req.body;
@@ -22,13 +23,25 @@ const register = asyncHandler (async (req, res) => {
         throw new ApiError(400, "User is already exits")
     }
 
+    let avatarUrl = '';
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer, 'avatars');
+      avatarUrl = result.secure_url;
+    }
+
     const user = await User.create({
         name,
+        
         email, 
         username,
         password,
-        role
+        role,
+        avatar : avatarUrl,
     })
+    const token = jwt.sign(
+        {id : user._id},
+        process.env.JWT_SECRET
+    );
 
     const createUser = await User.findById(user?._id).select("-password")
     if (!createUser) {
@@ -38,7 +51,7 @@ const register = asyncHandler (async (req, res) => {
     return res
     .status(201)
     .json(
-        new ApiResponse (201, createUser, "User register is successfully")
+        new ApiResponse (201,{token ,createUser}, "User register is successfully")
     )
 
 })
@@ -108,9 +121,23 @@ const register = asyncHandler (async (req, res) => {
     )
  })
  
+const getCurrentUser = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+
+    const user = await User.findById(userId).select("-password")
+
+    if (!user) {
+        throw new ApiError(404, "User not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "current user fetched successfully"))
+})
 
  export {
     register,
     login,
     changePassword,
+    getCurrentUser,
  }

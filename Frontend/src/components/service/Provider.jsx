@@ -8,7 +8,7 @@ export default function Providers() {
   const fetchProviders = async () => {
     const url = search ? `/api/providers/search?category=${search}` : `/api/providers`;
     const res = await axios.get(url);
-   // console.log(res.data.data);
+    console.log(res.data.data);
     setProviders(res.data.data);
   };
 

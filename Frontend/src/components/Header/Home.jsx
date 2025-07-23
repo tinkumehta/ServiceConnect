@@ -53,10 +53,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="text-center py-6 text-gray-700">
-        Testimonials / Featured Providers
-      </footer>
+     
     </div>
   )
 }

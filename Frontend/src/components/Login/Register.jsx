@@ -1,99 +1,129 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '',username : '', password: '', role : '' });
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const [form, setForm] = useState({
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    role: '',
+  });
 
-  const handleSubmit = async (e) => {
+  const [avatar, setAvatar] = useState(null);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setAvatar(e.target.files[0]);
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post('/api/auth/register', form);
-       navigate("/login")
-      //alert('Registered! Now Login.');
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('username', form.username);
+      formData.append('email', form.email);
+      formData.append('password', form.password);
+      formData.append('role', form.role);
+      if (avatar) formData.append('avatar', avatar);
+
+      const res = await axios.post(
+        '/api/auth/register',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+
+     // console.log(res.data.data);
+     
+      navigate('/login');
     } catch (err) {
-      alert(err.response.data.message);
+      console.error(err);
+      alert(err.response?.data?.message || 'Registration failed');
     }
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow">
-        <h2 className="text-2xl font-bold text-center">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-            <label htmlFor="name" className="block mb-1 text-sm font-medium">
-              Name
-            </label>
+    <div className="max-w-md mx-auto p-4">
+      <h2 className="text-2xl mb-4 font-bold">Register</h2>
+      <form onSubmit={handleRegister} className="flex flex-col gap-3">
         <input
+          name="name"
           placeholder="Name"
-          value={form.name} 
-          onChange={(e) => setForm({ ...form, name: e.target.value })} 
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-           />
-           </div>
+          value={form.name}
+          onChange={handleChange}
+          className="border p-2"
+          required
+        />
+        <input
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+          className="border p-2"
+          required
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="border p-2"
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          className="border p-2"
+          required
+        />
+        <input
+          name="role"
+          placeholder="Role (eg. user, admin)"
+          value={form.role}
+          onChange={handleChange}
+          className="border p-2"
+          required
+        />
 
-           <div>
-            <label htmlFor="email" className="block mb-1 text-sm font-medium">
-              Email
-            </label>
         <input
-         placeholder="Email" 
-         value={form.email} 
-         onChange={(e) => setForm({ ...form, email: e.target.value })} 
-         className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-          />
-          </div>
-        <div>
-            <label htmlFor="username" className="block mb-1 text-sm font-medium">
-              Username
-            </label>
-        <input
-         placeholder="Username" 
-         value={form.username} 
-         onChange={(e) => setForm({ ...form, username: e.target.value })} 
-         className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="border p-2"
+        />
+
+        <button
+          type="submit"
+          className="bg-green-600 text-white py-2 px-4 rounded"
+        >
+          Register
+        </button>
+      </form>
+
+      {avatar && (
+        <div className="mt-4">
+          <p>Preview:</p>
+          <img
+            src={URL.createObjectURL(avatar)}
+            alt="Avatar Preview"
+            className="w-24 h-24 rounded-full object-cover"
           />
         </div>
-        <div>
-            <label htmlFor="password" className="block mb-1 text-sm font-medium">
-              Password
-            </label>
-        <input 
-        placeholder="Password" 
-        type="password" 
-        value={form.password} 
-        onChange={(e) => setForm({ ...form, password: e.target.value })} 
-        className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-         />
-         </div>
-         <div>
-            <label htmlFor="role" className="block mb-1 text-sm font-medium">
-              Role
-            </label>
-            
-         <input
-          placeholder='Role'
-          value={form.role}
-          onChange={(e) => setForm({...form , role : e.target.value})}
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-         />
-         </div>
-        <button
-         type="submit" 
-         className="w-full px-4 py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700">
-          Register
-          </button>
-      </form>
-      <p className="text-sm text-center text-gray-600">
-          Don&apos;t have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login
-          </a>
-        </p>
-    </div>
+      )}
     </div>
   );
 }
