@@ -1,13 +1,13 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get user
   const getCurrentUser = async () => {
     try {
       const res = await axios.get('/api/auth/current-user', {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setUser(res.data.data.user);
+      setUser(res.data.data);
     } catch (err) {
       setUser(null);
     } finally {
@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Register
   const register = async (formData) => {
     const res = await axios.post(
       '/api/auth/register',
@@ -33,20 +32,18 @@ export const AuthProvider = ({ children }) => {
       }
     );
     localStorage.setItem('token', res.data.data.token);
-    setUser(res.data.data.user);
+    await getCurrentUser(); // ✅ Immediately update user
   };
 
-  // Login
   const login = async (email, password) => {
     const res = await axios.post('/api/auth/login', {
       email,
       password,
     });
     localStorage.setItem('token', res.data.data.token);
-    setUser(res.data.data.user);
+    await getCurrentUser(); // ✅ Immediately update user
   };
 
-  // Logout
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);

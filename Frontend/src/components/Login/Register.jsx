@@ -1,65 +1,44 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Register() {
   const navigate = useNavigate();
+const { register } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     name: '',
     username: '',
     email: '',
     password: '',
-    role: '',
+    role : '',
   });
-
   const [avatar, setAvatar] = useState(null);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const handleFileChange = (e) => {
-    setAvatar(e.target.files[0]);
-  };
-
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+    if (avatar) formData.append('avatar', avatar);
 
-    try {
-      const formData = new FormData();
-      formData.append('name', form.name);
-      formData.append('username', form.username);
-      formData.append('email', form.email);
-      formData.append('password', form.password);
-      formData.append('role', form.role);
-      if (avatar) formData.append('avatar', avatar);
-
-      const res = await axios.post(
-        '/api/auth/register',
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
-
-     // console.log(res.data.data);
-     
-      navigate('/login');
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || 'Registration failed');
-    }
+    await register(formData);
+    navigate('/');
   };
 
   return (
     <div className="max-w-md mx-auto p-4">
       <h2 className="text-2xl mb-4 font-bold">Register</h2>
-      <form onSubmit={handleRegister} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           name="name"
           placeholder="Name"
-          value={form.name}
+         
           onChange={handleChange}
           className="border p-2"
           required
@@ -67,7 +46,7 @@ export default function Register() {
         <input
           name="username"
           placeholder="Username"
-          value={form.username}
+          
           onChange={handleChange}
           className="border p-2"
           required
@@ -76,7 +55,7 @@ export default function Register() {
           name="email"
           type="email"
           placeholder="Email"
-          value={form.email}
+          
           onChange={handleChange}
           className="border p-2"
           required
@@ -85,7 +64,7 @@ export default function Register() {
           name="password"
           type="password"
           placeholder="Password"
-          value={form.password}
+          
           onChange={handleChange}
           className="border p-2"
           required
@@ -93,7 +72,7 @@ export default function Register() {
         <input
           name="role"
           placeholder="Role (eg. user, admin)"
-          value={form.role}
+          
           onChange={handleChange}
           className="border p-2"
           required
@@ -102,7 +81,7 @@ export default function Register() {
         <input
           type="file"
           accept="image/*"
-          onChange={handleFileChange}
+          onChange={(e) => setAvatar(e.target.files[0])}
           className="border p-2"
         />
 

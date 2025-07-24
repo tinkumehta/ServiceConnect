@@ -1,21 +1,18 @@
-import { useState } from 'react';
+import { useState , useContext} from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-export default function Login({ setIsLoggedIn }) {
-  const [form, setForm] = useState({ email: '', password: '' });
+export default function Login() {
+   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('/api/auth/login', form);
-      localStorage.setItem('token', res.data.data.token);
-      setIsLoggedIn(true);
-      navigate("/");
-    } catch (err) {
-      alert(err.response.data.message);
-    }
+    await login(email, password);
+    navigate('/');
   };
 
   return (
@@ -27,7 +24,7 @@ export default function Login({ setIsLoggedIn }) {
         <p className="text-center text-gray-500 text-sm">
           Please login to your account
         </p>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-600">
               Email Address
@@ -35,8 +32,8 @@ export default function Login({ setIsLoggedIn }) {
             <input
               type="email"
               placeholder="Enter your email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+             
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
@@ -49,8 +46,8 @@ export default function Login({ setIsLoggedIn }) {
             <input
               type="password"
               placeholder="Enter your password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+             
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />

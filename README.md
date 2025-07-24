@@ -10,30 +10,62 @@
 
 ---
 
-## ✅ Features
+##  🚀 Full-Stack Auth App with JWT, Cloudinary & React Context
 
-- 🔒 **JWT Authentication** — secure login & protected routes
-- 🔍 **Search Providers** — by name, category, or location
-- ✍️ **Add Reviews & Ratings** — share your experience with providers
-- 💬 **Add Testimonials** — leave feedback that builds trust
-- 📂 **RESTful API** — Node.js, Express, MongoDB
-- ⚡ **Frontend** — Vite + React + Tailwind CSS
-- 📮 **API tested with Postman**
-
----
-
-## ⚙️ Tech Stack
-
-- **Backend:** Node.js, Express.js, MongoDB, Mongoose
-- **Auth:** JWT
-- **Frontend:** React.js (Vite), Tailwind CSS, Axios, React Router DOM
-- **Testing:** Postman
+This project is a **full-stack authentication system** built with:
+- **Node.js + Express** for the backend API
+- **MongoDB + Mongoose** for data storage
+- **JWT (JSON Web Tokens)** for secure authentication
+- **Cloudinary** for file uploads (user avatars)
+- **React + Vite** for the frontend
+- **React Context API** for global auth state
+- **Axios** for HTTP requests
+- **Tailwind CSS** for styling (optional)
 
 ---
 
-## 🚀 Setup & Run Locally
+## 📌 **Features**
 
-**Clone the repo**
+✅ User **Registration** with avatar upload to **Cloudinary**  
+✅ User **Login** with JWT  
+✅ **Protected Routes** — only logged-in users can access certain pages  
+✅ **Global AuthContext** — keeps auth state in sync across the app  
+✅ **Dynamic Navbar** — shows `Login`/`Logout` based on auth state  
+✅ **Profile Page** with user details & Cloudinary avatar  
+✅ **Postman Collection** provided for testing all routes  
+✅ Clean **error handling** & secure password hashing
+
+---
+
+## ⚙️ **Tech Stack**
+
+- **Backend:** Node.js, Express, MongoDB, Mongoose, JWT, bcrypt, Cloudinary SDK
+- **Frontend:** React, Vite, Axios, React Router DOM, Tailwind CSS
+- **Other:** Postman for API testing
+
+---
+
+## 🚦 **How to Run Locally**
+
+### 1️⃣ Clone the repo
 ```bash
-git clone https://github.com/tinkumehata/service-connect.git
-cd service-connect
+git clone https://github.com/tinkumehta/ServiceConnect.git
+cd ServiceConnect
+```
+📁 server \
+ ┣ 📂 controllers\
+ ┣ 📂 models\
+ ┣ 📂 routes\
+ ┣ 📂 middlewares\
+ ┣ 📜 server.js
+
+📁 client\
+ ┣ 📂 src\
+ ┃ ┣ 📂 context (AuthContext.jsx)\
+ ┃ |  
+ ┃ ┣ 📂 components ()\
+ |    |-📂 Footer   
+ |    |-📂 Header   
+ |    |-📂 Login  (Login.jsx, Register.jsx, Profile.jsx)\
+ ┃ ┣ 📜 App.jsx\
+ ┃ ┣ 📜 main.jsx

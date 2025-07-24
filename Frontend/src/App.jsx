@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
 import {
@@ -7,37 +7,48 @@ import {
    Providers, Reviews ,Home, Header,
    Footer, Login, Register, Profile
   } from "./components";
+  import ProtectedRoute from "./components/PrivateRoutes";
 
 export default function App() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    window.location.href = '/login'
-  };
+  
 
   return (
-    <Router>
-      <Header isLoggedIn={isLoggedIn} logout={logout} />
+     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/review" element={<Reviews />} />
         <Route path="/provider" element={<Providers />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/createProvider" element={<CreateProvider />} />
-        
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/review" element={
+          <ProtectedRoute>
+            <Reviews />
+          </ProtectedRoute>
+        }
+        />
+        <Route path="/createProvider" element={
+          <ProtectedRoute>
+            <CreateProvider />
+          </ProtectedRoute>
+        }
+        />
+        <Route path="/testimonials" element={
+          <ProtectedRoute>
+            <Testimonials />
+          </ProtectedRoute>
+        }
+        />
       </Routes>
       <Footer />
-    </Router>
+    </BrowserRouter>
   );
 }
