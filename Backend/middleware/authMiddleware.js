@@ -24,7 +24,7 @@ const verifyToken = async (req, res, next) => {
         req.user = await User.findById(decoded._id).select('_id');
         next();
     } catch (error) {
-         console.error(err);
+         console.error(error);
     return res.status(401).json({
       success: false,
       message: 'Invalid token',
