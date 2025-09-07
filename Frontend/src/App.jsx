@@ -41,12 +41,7 @@ export default function App() {
           </ProtectedRoute>
         }
         />
-        <Route path="/testimonials" element={
-          <ProtectedRoute>
-            <Testimonials />
-          </ProtectedRoute>
-        }
-        />
+       
       </Routes>
       <Footer />
     </BrowserRouter>
