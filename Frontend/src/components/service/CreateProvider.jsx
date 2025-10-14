@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+const api = import.meta.env.VITE_API_URL;
 
 export default function CreateProvider() {
   const [form, setForm] = useState({ name: '', category: '', contact: '', location: '', description: '' });
@@ -9,7 +10,7 @@ export default function CreateProvider() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/providers', form, {
+      await axios.post(`${api}/api/providers`, form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

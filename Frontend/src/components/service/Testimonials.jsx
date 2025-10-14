@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+const api = import.meta.env.VITE_API_URL;
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
@@ -8,7 +9,7 @@ export default function Testimonials() {
   const [message, setMessage] = useState('');
 
   const fetchTestimonials = async () => {
-    const res = await axios.get('/api/testimonials');
+    const res = await axios.get(`${api}/api/testimonials`);
     setTestimonials(res.data.data);
   };
 

@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+// import api from './config';
 
+const api = import.meta.env.VITE_API_URL;
 
 export const AuthContext = createContext();
 
@@ -10,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const getCurrentUser = async () => {
     try {
-      const res = await axios.get('/api/auth/current-user', {
+      const res = await axios.get(`${api}/api/auth/current-user`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -25,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (formData) => {
     const res = await axios.post(
-      '/api/auth/register',
+      `${api}/api/auth/register`,
       formData,
       {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -36,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const res = await axios.post('/api/auth/login', {
+    const res = await axios.post(`${api}/api/auth/login`, {
       email,
       password,
     });

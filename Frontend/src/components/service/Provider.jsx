@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+const api = import.meta.env.VITE_API_URL;
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
   const [search, setSearch] = useState('');
 
   const fetchProviders = async () => {
-    const url = search ? `/api/providers/search?category=${search}` : `/api/providers`;
+    const url = search ? `${api}/api/providers/search?category=${search}` : `${api}/api/providers`;
     const res = await axios.get(url);
    // console.log(res.data.data);
     setProviders(res.data.data);

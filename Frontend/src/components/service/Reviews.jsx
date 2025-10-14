@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+const api = import.meta.env.VITE_API_URL;
 
 export default function Reviews() {
   const [providerId, setProviderId] = useState('');
@@ -13,7 +14,7 @@ export default function Reviews() {
     if (!providerId) return;
     setIsLoading(true);
     try {
-      const res = await axios.get(`/api/reviews/${providerId}`);
+      const res = await axios.get(`${api}/api/reviews/${providerId}`);
       setReviews(res.data.data);
       
       // In a real app, you would fetch provider info from another endpoint
