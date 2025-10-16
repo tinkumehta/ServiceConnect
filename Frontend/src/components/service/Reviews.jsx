@@ -15,6 +15,8 @@ export default function Reviews() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${api}/api/reviews/${providerId}`);
+     // console.log(res.data.data);
+      
       setReviews(res.data.data);
       
       // In a real app, you would fetch provider info from another endpoint
@@ -34,7 +36,7 @@ export default function Reviews() {
     e.preventDefault();
     try {
       await axios.post(
-        '/api/reviews',
+        `${api}/api/reviews`,
         { providerId, rating: form.rating, comment: form.comment },
         {
           headers: {
