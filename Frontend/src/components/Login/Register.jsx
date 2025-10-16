@@ -93,10 +93,9 @@ export default function Register() {
     setIsLoading(true);
     try {
       const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) =>
-        formData.append(key, value)
-      );
-      if (avatar) formData.append('avatar', avatar);
+  Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+  if (avatar) formData.append("avatar", avatar);
+
 
       await register(formData);
       navigate('/');
