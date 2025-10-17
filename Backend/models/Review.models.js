@@ -24,4 +24,7 @@ import mongoose,{Schema} from "mongoose";
     {timestamps : true}
  )
 
+ // prevent user from submitting more than one review per product
+  reviewsSchema.index({user : 1, provider : 1}, {unique : true});
+
   export const Reviews = mongoose.model('Reviews', reviewsSchema)
